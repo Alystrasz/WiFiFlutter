@@ -21,7 +21,9 @@ class WifiScanPlugin extends WifiScanPlatform {
     if (!_client.wirelessEnabled || !_client.wirelessHardwareEnabled) {
       return Future.value(CanStartScan.noLocationServiceDisabled);
     }
-    return Future.value(_client.connectivityCheckAvailable && !_client.startup ? CanStartScan.yes : CanStartScan.failed);
+    return Future.value(_client.connectivityCheckAvailable && !_client.startup
+        ? CanStartScan.yes
+        : CanStartScan.failed);
   }
 
   @override
@@ -29,27 +31,31 @@ class WifiScanPlugin extends WifiScanPlatform {
     // Retrieve Wi-Fi network interface
     // TODO which interface to use if there are many?
     // TODO find a better way to find Wi-Fi interface
-    _device = _client.devices.firstWhere((element) => element.interface.substring(0, 2) == "wl");
+    _device = _client.devices
+        .firstWhere((element) => element.interface.substring(0, 2) == "wl");
     return Future.value(true);
   }
 
   @override
-  Future<CanGetScannedResults> canGetScannedResults({bool askPermissions = true}) {
+  Future<CanGetScannedResults> canGetScannedResults(
+      {bool askPermissions = true}) {
     // TODO: implement canGetScannedResults
     return Future.value(CanGetScannedResults.yes);
   }
 
   @override
   Future<List<WiFiAccessPoint>> getScannedResults() {
-    List<WiFiAccessPoint> aps = _device.wireless!.accessPoints.map((ap) => WiFiAccessPoint.fromMap({
-      "ssid": utf8.decode(ap.ssid),
-      "bssid": ap.hwAddress,
-      "capabilities": "",
-      "frequency": ap.frequency,
-      "level": ap.strength,
-      "timestamp": ap.lastSeen,
-      "channelWidth": ap.maxBitrate,
-    })).toList();
+    List<WiFiAccessPoint> aps = _device.wireless!.accessPoints
+        .map((ap) => WiFiAccessPoint.fromMap({
+              "ssid": utf8.decode(ap.ssid),
+              "bssid": ap.hwAddress,
+              "capabilities": "",
+              "frequency": ap.frequency,
+              "level": ap.strength,
+              "timestamp": ap.lastSeen,
+              "channelWidth": ap.maxBitrate,
+            }))
+        .toList();
     return Future.value(aps);
   }
 }
