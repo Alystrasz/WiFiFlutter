@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:wifi_scan/wifi_scan.dart';
 import 'package:nm/nm.dart';
 
@@ -29,5 +31,25 @@ class WifiScanPlugin extends WifiScanPlatform {
     // TODO find a better way to find Wi-Fi interface
     _device = _client.devices.firstWhere((element) => element.interface.substring(0, 2) == "wl");
     return Future.value(true);
+  }
+
+  @override
+  Future<CanGetScannedResults> canGetScannedResults({bool askPermissions = true}) {
+    // TODO: implement canGetScannedResults
+    return Future.value(CanGetScannedResults.yes);
+  }
+
+  @override
+  Future<List<WiFiAccessPoint>> getScannedResults() {
+    List<WiFiAccessPoint> aps = _device.wireless!.accessPoints.map((ap) => WiFiAccessPoint.fromMap({
+      "ssid": utf8.decode(ap.ssid),
+      "bssid": ap.hwAddress,
+      "capabilities": "",
+      "frequency": ap.frequency,
+      "level": ap.strength,
+      "timestamp": ap.lastSeen,
+      "channelWidth": ap.maxBitrate,
+    })).toList();
+    return Future.value(aps);
   }
 }
