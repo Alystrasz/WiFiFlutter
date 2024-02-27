@@ -6,7 +6,7 @@ import 'package:nm/nm.dart';
 /// Linux implementation of the wifi_scan plugin.
 /// This relies on the NetworkManager client package from Canonical
 /// (https://pub.dev/packages/nm).
-class WifiScanPlugin extends WifiScanPlatform {
+class WifiScanPlugin extends WiFiScan {
   late NetworkManagerClient _client;
   late NetworkManagerDevice _device;
 
@@ -20,7 +20,7 @@ class WifiScanPlugin extends WifiScanPlatform {
 
   /// Registers this plugin to be used within Linux applications.
   static void registerWith() {
-    WifiScanPlatform.instance = WifiScanPlugin();
+    WiFiScan.instance = WifiScanPlugin();
   }
 
   @override
