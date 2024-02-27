@@ -15,7 +15,9 @@ class WifiScanPlugin extends WifiScanPlatform {
 
   @override
   Future<CanStartScan> canStartScan({bool askPermissions = true}) {
-    print("TODO");
-    return super.canStartScan(askPermissions: askPermissions);
+    if (!_client.wirelessEnabled || !_client.wirelessHardwareEnabled) {
+      return Future.value(CanStartScan.noLocationServiceDisabled);
+    }
+    return Future.value(_client.connectivityCheckAvailable && !_client.startup ? CanStartScan.yes : CanStartScan.failed);
   }
 }
