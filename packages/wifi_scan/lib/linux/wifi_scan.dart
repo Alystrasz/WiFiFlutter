@@ -58,7 +58,7 @@ class WifiScanPlugin extends WiFiScan {
               "bssid": ap.hwAddress,
               "capabilities": "",
               "frequency": ap.frequency,
-              "level": ap.strength,
+              "level": (ap.strength/100 * (-30 - -120) - 120).toInt(),
               "timestamp": ap.lastSeen,
               "channelWidth": ap.maxBitrate,
             }))
