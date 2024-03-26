@@ -672,7 +672,7 @@ public class WifiIotPlugin
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
       poResult.success(moWiFiAPManager.getWifiApState().ordinal());
     } else {
-      poResult.success(localOnlyHotspotState);
+      poResult.success(localOnlyHotspotState.ordinal());
     }
   }
 
